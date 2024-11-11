@@ -13,5 +13,5 @@ const float WeaponActiveTime = 0.25f;
 
 const float	TileSize = 40.f;
 const float	ChunkSize = 117;
-const int	MapHeight = 30;
-const int	MapWidth = 40;
+const int	MapHeight = 20;
+const int	MapWidth = 25;

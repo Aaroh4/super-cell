@@ -94,7 +94,7 @@ void Game::update(float deltaTime)
 			}
 			for (size_t i = 0; i < m_bullets.size(); i++)
 			{
-				if (m_bullets[i].getSprite().getPosition().x >= ScreenWidth || m_bullets[i].getSprite().getPosition().y >= ScreenHeight
+				if (m_bullets[i].getSprite().getPosition().x >= 2000 || m_bullets[i].getSprite().getPosition().y >= 2000
 				|| m_bullets[i].getSprite().getPosition().x < 0 || m_bullets[i].getSprite().getPosition().y < 0)
 				{
 					m_bullets.erase(m_bullets.begin() + i);

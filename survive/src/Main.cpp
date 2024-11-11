@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     // ResourceManager Must be Instantiated here -- DO NOT CHANGE
     ResourceManager::init(argv[0]);
 
-    sf::RenderWindow window({1920u, 1080u}, "Super&Cell", sf::Style::Fullscreen | sf::Style::Titlebar);
+    sf::RenderWindow window({1000, 800u}, "Super&Cell", sf::Style::Titlebar | sf::Style::Close);
     window.setKeyRepeatEnabled(false);
     
     std::unique_ptr<Game> pGame = std::make_unique<Game>();
@@ -25,8 +25,6 @@ int main(int argc, char* argv[])
     
     sf::Clock clock;
 	window.setFramerateLimit(144);
-	sf::View				gameView = window.getView();
-	window.setView( gameView);
     // run the program as long as the window is open
     while (window.isOpen())
     {
