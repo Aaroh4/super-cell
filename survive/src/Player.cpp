@@ -8,6 +8,7 @@ Player::Player(Game* pGame) :
 
 bool Player::initialise(int i)
 {
+	m_lastTimeShot = 0;
 	m_collision.setRadius(20);
 	m_collision.setOutlineColor(sf::Color::Red);
 	m_collision.setFillColor(sf::Color::Magenta);
@@ -114,9 +115,9 @@ float Player::checkCollisionY(float y, const std::vector<sf::RectangleShape> &bl
 
 void Player::attack(sf::Clock clock)
 {
-	if (m_lastTimeShot + 1.f < clock.getElapsedTime().asSeconds())
+	if (m_lastTimeShot + 0.5f < clock.getElapsedTime().asSeconds())
 	{
-		Bullet temp(m_collision.getPosition() + m_lastDir * 20.f, 5, 10, m_lastDir * 500.f);
+		Bullet temp(m_collision.getPosition() + m_lastDir * 50.f, 5, 10, m_lastDir * 500.f);
 		m_pGame->pushBullet(temp);
 		m_lastTimeShot = clock.getElapsedTime().asSeconds();
 	}
