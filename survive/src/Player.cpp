@@ -16,7 +16,7 @@ bool Player::initialise(int i)
 	if (i % 2 == 0)
 		m_collision.setPosition(40, 40);
 	else
-    	m_collision.setPosition(1500, 1100);
+    	m_collision.setPosition(1500, 1050);
 	initKeybinds(i);
     return true;
 }
@@ -37,7 +37,6 @@ void Player::initKeybinds(int i)
 		m_keybinds[sf::Keyboard::Right] = "MOVE_RIGHT";
 		m_keybinds[sf::Keyboard::Up] = "MOVE_UP";
 		m_keybinds[sf::Keyboard::Down] = "MOVE_DOWN";
-		m_keybinds[sf::Keyboard::M] = "ATTACK";
 	}
 }
 
