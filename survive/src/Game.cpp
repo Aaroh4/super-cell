@@ -106,6 +106,7 @@ void Game::update(float deltaTime)
 				if (m_pPlayers[0].get()->getCollider().getGlobalBounds().intersects(m_bullets[i].getSprite().getGlobalBounds()))
 				{
 					m_pPlayers[0].get()->setIsDead(true);
+					m_bullets.clear();
 					break ;
 				}
 			}            
