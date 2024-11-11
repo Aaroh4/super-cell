@@ -7,6 +7,7 @@
 #include <vector>
 #include "Constants.h"
 #include "PlayArea.h"
+#include "../includes/Bullet.h"
 
 class Player;
 class Game;
@@ -38,8 +39,9 @@ public:
     void onKeyPressed(std::string key, size_t i);
     void onKeyReleased(std::string key, size_t i);
 
+	void pushBullet(Bullet input);
+
     Player* getPlayer(const int &i) const;
-    sf::Texture* getPlayerTexture() { return &m_playerTexture; }
 private:
     std::vector<std::unique_ptr<Player>> m_pPlayers;
 	std::unique_ptr<PlayArea>	m_pPlayArea;
@@ -48,7 +50,6 @@ private:
     std::unique_ptr<sf::Clock> m_pClock;
     std::vector<std::unique_ptr<GameInput>> m_pGameInputs;
 
-    
+	std::vector<Bullet>	m_bullets;
     sf::Font m_font;
-    sf::Texture m_playerTexture;
 };

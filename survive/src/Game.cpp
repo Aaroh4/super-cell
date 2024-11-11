@@ -6,9 +6,7 @@
 
 #include "../includes/ResourceManager.h"
 #include "../includes/InputHandler.h"
-#include "../includes/Weapon.h"
 #include "../includes/Player.h"
-#include "../includes/Rectangle.h"
 
 Game::Game() :
     m_state(State::WAITING),
@@ -39,11 +37,6 @@ bool Game::initialise()
         std::cerr << "Unable to load font" << std::endl;
         return false;
     }
-    if (!m_playerTexture.loadFromFile(ResourceManager::getFilePath("player.png")))
-    {
-        std::cerr << "Unable to load texture" << std::endl;
-        return false;
-    }
 
     resetLevel();
     return true;
@@ -53,6 +46,11 @@ void Game::resetInputs()
 {
 	for (size_t i = 0; i < m_pGameInputs.size(); i++)
 		m_pGameInputs[i].get()->resetInputs();
+}
+
+void Game::pushBullet(Bullet input)
+{
+	m_bullets.push_back(input);
 }
 
 void Game::resetLevel()
@@ -66,6 +64,8 @@ void Game::resetLevel()
 	m_pPlayArea->build();
 	m_pClock->restart();
 }
+
+#include <iostream>
 
 void Game::update(float deltaTime)
 {
@@ -85,14 +85,31 @@ void Game::update(float deltaTime)
         {
 			for (size_t i = 0; i < m_pPlayers.size(); i++)
 			{
-			  	m_pGameInputs[i]->update(deltaTime, m_pPlayArea->getMap());
-            	m_pPlayers[i]->update(deltaTime);
+				if (m_pPlayers[i]->isDead())
+				{
+					m_state = State::WAITING;
+					resetLevel();
+				}
+			  	m_pGameInputs[i]->update(deltaTime, m_pPlayArea->getMap(), *m_pClock.get());
 			}
-            //if (m_pPlayer->isDead())
-            //{
-            //    m_state = State::WAITING;
-            //    resetLevel();
-            //}
+			for (size_t i = 0; i < m_bullets.size(); i++)
+			{
+				if (m_bullets[i].getSprite().getPosition().x >= ScreenWidth || m_bullets[i].getSprite().getPosition().y >= ScreenHeight
+				|| m_bullets[i].getSprite().getPosition().x < 0 || m_bullets[i].getSprite().getPosition().y < 0)
+				{
+					m_bullets.erase(m_bullets.begin() + i);
+					i--;
+					continue;
+				}
+				else
+					m_bullets[i].move(deltaTime);
+				for (size_t i = 0; i < m_pPlayers.size(); i++)
+					if (m_pPlayers[i].get()->getCollider().getGlobalBounds().intersects(m_bullets[i].getSprite().getGlobalBounds()))
+					{
+						m_pPlayers[i].get()->setIsDead(true);
+						break ;
+					}
+			}            
         }
         break;
     }
@@ -111,21 +128,13 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
         startText.setStyle(sf::Text::Bold);
         target.draw(startText);
     }
-    else
-    {
-        sf::Text timerText;
-        timerText.setFont(m_font);
-        timerText.setFillColor(sf::Color::White);
-        timerText.setStyle(sf::Text::Bold);
-        timerText.setString(std::to_string((int)m_pClock->getElapsedTime().asSeconds()));
-        timerText.setPosition(sf::Vector2f((ScreenWidth - timerText.getLocalBounds().getSize().x) * 0.5, 20));
-        target.draw(timerText);
-    }
 
     // Draw player.
 	for (auto& player : m_pPlayers)
 		player->draw(target, states);
 	
+	for (size_t i = 0; i < m_bullets.size(); i++)
+		target.draw(m_bullets[i].getSprite());
 	// Draw Map/PlayArea
 	m_pPlayArea->draw(target, states);
 }

@@ -27,7 +27,7 @@ public:
     GameInput(Game* pGame, Player* pPlayer);
     ~GameInput();
     
-    void update(float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map);
+    void update(float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map, sf::Clock clock);
     void onKeyPressed(std::string key);
     void onKeyReleased(std::string key);
 	void resetInputs();

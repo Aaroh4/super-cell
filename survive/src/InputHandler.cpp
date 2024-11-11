@@ -1,5 +1,4 @@
 #include "../includes/InputHandler.h"
-#include "../includes/Weapon.h"
 #include "../includes/Player.h"
 
 GameInput::GameInput(Game* pGame, Player* pPlayer) :
@@ -23,7 +22,7 @@ void GameInput::resetInputs()
 	m_inputData.m_spaceReleased = true;
 }
 
-void GameInput::update(float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map)
+void GameInput::update(float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map, sf::Clock clock)
 {
     if (m_inputData.hasInputs())
     {
@@ -32,7 +31,7 @@ void GameInput::update(float deltaTime, const std::map<std::pair<int, int>, std:
 
     if (m_inputData.m_space)
     {
-        m_pPlayer->attack();
+        m_pPlayer->attack(clock);
     }
 }
 
@@ -54,13 +53,9 @@ void GameInput::onKeyPressed(std::string key)
     {
         m_inputData.m_movingRight = true;
     }
-    else if (key == "ATTACK")
+    if (key == "ATTACK")
     {
-        if (m_inputData.m_spaceReleased)
-        {
-            m_inputData.m_space = true;
-        }
-        m_inputData.m_spaceReleased = false;
+      	m_inputData.m_space = true;
     }
 }
 
@@ -85,6 +80,5 @@ void GameInput::onKeyReleased(std::string key)
     else if (key == "ATTACK")
     {
         m_inputData.m_space = false;
-        m_inputData.m_spaceReleased = true;
     }
 }

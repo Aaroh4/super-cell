@@ -7,6 +7,7 @@ PlayArea::PlayArea(float inputTileSize): m_vertices(sf::Triangles)
 
 void PlayArea::build()
 {
+	//Building the playable map
 	for (int i = 0; i <  MapHeight; i++)
 	{
 		for (int j = 0; j < MapWidth; j++)
@@ -31,7 +32,8 @@ void PlayArea::build()
         	m_vertices.append(sf::Vertex(bottomLeft, sf::Color::Blue));
             m_vertices.append(sf::Vertex(topRight, sf::Color::Blue));
             m_vertices.append(sf::Vertex(bottomRight, sf::Color::Blue));
-			this->m_map[{j * TileSize / 120, i * TileSize / 120}].push_back(temp);
+			this->m_map[{temp.getPosition().x / 120, temp.getPosition().y / 120}].push_back(temp);
+			
 			if (i != 0 && i != MapHeight - 1)
 				j += MapWidth - 2;
 		}
@@ -40,6 +42,7 @@ void PlayArea::build()
 
 void PlayArea::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+	// Drawing with vertices which is faster than with shapes
     target.draw(m_vertices, states);
 }
 

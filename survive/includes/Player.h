@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Rectangle.h"
-#include "Weapon.h"
 #include "../includes/InputHandler.h"
 #include "../includes/Constants.h"
 #include "../includes/Game.h"
+#include "../includes/Bullet.h"
 
 #include <memory>
 #include <unordered_map>
@@ -17,40 +16,39 @@ class Weapon;
 enum eDirection
 {
     LEFT,
-    RIGHT
+    RIGHT,
+	UP,
+	DOWN
 };
 
-class Player : public Rectangle
+class Player
 {
 public:
     Player(Game* pGame);
-    virtual ~Player() {}
+    ~Player() {}
     
     bool initialise(int i);
-    void move(InputData inputData, float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map);
-    void attack();
-    void update(float deltaTime);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void move(InputData inputData, float deltaTime, std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> map);
+    void attack(sf::Clock clock);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     bool isDead() const { return m_isDead; }
     void setIsDead(bool isDead) { m_isDead = isDead; }
 
-	void checkCollisionY(const std::vector<sf::RectangleShape> &blocks);
-	void checkCollisionX(const std::vector<sf::RectangleShape> &blocks);
+	float checkCollisionX(float x,const std::vector<sf::RectangleShape> &blocks);
+	float checkCollisionY(float y,const std::vector<sf::RectangleShape> &blocks);
 
+	const sf::CircleShape  &getCollider() const;
 
 	void initKeybinds(int i);
 	std::unordered_map<sf::Keyboard::Key, std::string>& getKeybinds() { return m_keybinds; }
 
-    Weapon* getWeapon() { return m_pWeapon.get(); }
-
 private:
+	sf::CircleShape	m_collision;
     bool    m_isDead = false;
     eDirection m_direction = LEFT;
     Game*   m_pGame;
-    std::unique_ptr<Weapon> m_pWeapon;
 	std::unordered_map<sf::Keyboard::Key, std::string>	m_keybinds;
-
-	int		m_chunkPosX;
-	int		m_chunkPosY;
+	sf::Vector2f		m_lastDir;
+	float				m_lastTimeShot;
 };

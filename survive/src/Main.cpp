@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
-					for (int i = 0; i < 2; i++) // REMOVE HARDCODE!!
+					for (int i = 0; i < 2; i++)
 					{
 						if (pGame.get()->getPlayer(i)->getKeybinds().count(event.key.code))
    							 pGame->onKeyPressed(pGame.get()->getPlayer(i)->getKeybinds()[event.key.code], i);
