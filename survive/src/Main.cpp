@@ -25,6 +25,8 @@ int main(int argc, char* argv[])
     
     sf::Clock clock;
 	window.setFramerateLimit(144);
+	sf::View				gameView = window.getView();
+	window.setView( gameView);
     // run the program as long as the window is open
     while (window.isOpen())
     {
