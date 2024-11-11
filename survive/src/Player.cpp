@@ -13,7 +13,10 @@ bool Player::initialise(int i)
 	m_collision.setOutlineColor(sf::Color::Red);
 	m_collision.setFillColor(sf::Color::Magenta);
     setIsDead(false);
-    m_collision.setPosition(ScreenWidth / 2, ScreenHeight / 2);
+	if (i % 2 == 0)
+		m_collision.setPosition(40, 40);
+	else
+    	m_collision.setPosition(1500, 1100);
 	initKeybinds(i);
     return true;
 }
