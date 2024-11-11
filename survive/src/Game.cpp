@@ -13,7 +13,8 @@
 Game::Game() :
     m_state(State::WAITING),
     m_pClock(std::make_unique<sf::Clock>()),
-    m_pPlayers()
+    m_pPlayers(),
+	m_pPlayArea(std::make_unique<PlayArea>(TileSize))
 {
 	// Adding players and their movements
 	m_pPlayers.push_back(std::make_unique<Player>(this));
@@ -48,6 +49,12 @@ bool Game::initialise()
     return true;
 }
 
+void Game::resetInputs()
+{
+	for (size_t i = 0; i < m_pGameInputs.size(); i++)
+		m_pGameInputs[i].get()->resetInputs();
+}
+
 void Game::resetLevel()
 {
 	int	i = 0;
@@ -56,6 +63,7 @@ void Game::resetLevel()
 		i++;
    		player->initialise(i);
 	}
+	m_pPlayArea->build();
 	m_pClock->restart();
 }
 
@@ -77,7 +85,7 @@ void Game::update(float deltaTime)
         {
 			for (size_t i = 0; i < m_pPlayers.size(); i++)
 			{
-			  	m_pGameInputs[i]->update(deltaTime);
+			  	m_pGameInputs[i]->update(deltaTime, m_pPlayArea->getMap());
             	m_pPlayers[i]->update(deltaTime);
 			}
             //if (m_pPlayer->isDead())
@@ -117,6 +125,9 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     // Draw player.
 	for (auto& player : m_pPlayers)
 		player->draw(target, states);
+	
+	// Draw Map/PlayArea
+	m_pPlayArea->draw(target, states);
 }
 
 

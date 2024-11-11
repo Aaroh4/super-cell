@@ -1,7 +1,10 @@
 #pragma once
 
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
+#include <map>
+#include <vector>
 
 class Player;
 class Game;
@@ -24,9 +27,10 @@ public:
     GameInput(Game* pGame, Player* pPlayer);
     ~GameInput();
     
-    void update(float deltaTime);
+    void update(float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map);
     void onKeyPressed(std::string key);
     void onKeyReleased(std::string key);
+	void resetInputs();
     
     
 private:

@@ -24,10 +24,12 @@ int main(int argc, char* argv[])
     }
     
     sf::Clock clock;
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen())
     {
+		// Deltatime
+		float dt = clock.restart().asSeconds();
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -52,14 +54,13 @@ int main(int argc, char* argv[])
    							 pGame->onKeyReleased(pGame.get()->getPlayer(i)->getKeybinds()[event.key.code], i);
 					}
                     break;
+				case sf::Event::LostFocus:
+					pGame.get()->resetInputs();
                 default:
                     break;
             }
         }
-        
-        sf::Time elapsedTime = clock.getElapsedTime();
-        clock.restart();
-        pGame->update(elapsedTime.asSeconds());
+        pGame->update(dt);
         
         // clear the window with black color
         window.clear(sf::Color::Black);

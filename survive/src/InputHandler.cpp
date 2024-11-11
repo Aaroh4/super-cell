@@ -13,12 +13,21 @@ GameInput::~GameInput()
 {
     
 }
+void GameInput::resetInputs()
+{
+	m_inputData.m_movingUp = false;
+	m_inputData.m_movingDown = false;
+	m_inputData.m_movingLeft = false;
+	m_inputData.m_movingRight = false;
+	m_inputData.m_space = false;
+	m_inputData.m_spaceReleased = true;
+}
 
-void GameInput::update(float deltaTime)
+void GameInput::update(float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map)
 {
     if (m_inputData.hasInputs())
     {
-        m_pPlayer->move(m_inputData, deltaTime);
+        m_pPlayer->move(m_inputData, deltaTime, map);
     }
 
     if (m_inputData.m_space)

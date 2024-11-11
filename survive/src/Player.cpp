@@ -1,4 +1,5 @@
 #include "../includes/Player.h"
+#include "../includes/MathUtils.h"
 
 Player::Player(Game* pGame) :
     Rectangle(sf::Vector2f(PlayerWidth, PlayerHeight)),
@@ -39,20 +40,24 @@ void Player::initKeybinds(int i)
 	}
 }
 
-void Player::move(InputData inputData, float deltaTime)
+void Player::move(InputData inputData, float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map)
 {
     float xSpeed = 0.0f;
     float ySpeed = 0.0f;
     
     xSpeed -= inputData.m_movingLeft * PlayerSpeed;
     xSpeed += inputData.m_movingRight * PlayerSpeed;
-    xSpeed *= deltaTime;
 
     ySpeed -= inputData.m_movingUp * PlayerSpeed;
     ySpeed += inputData.m_movingDown * PlayerSpeed;
-    ySpeed *= deltaTime;
     
-    sf::Transformable::move(sf::Vector2f(xSpeed, ySpeed));
+	sf::Vector2f movement(xSpeed, ySpeed);
+
+	sf::Vector2f normalizedMovement = VecNormalized(movement);
+
+	sf::Vector2f finalMovement = normalizedMovement * PlayerSpeed;
+
+    sf::Transformable::move(finalMovement * deltaTime);
     setPosition(std::clamp(getPosition().x, 0.0f, (float)ScreenWidth), getPosition().y);
 
     if (m_pWeapon->isActive() == false)
@@ -78,6 +83,8 @@ void Player::update(float deltaTime)
         getCenter().x - (m_direction == LEFT ? weaponSize.x : 0.0f),
         getCenter().y - weaponSize.y / 2.0f));
     m_pWeapon->update(deltaTime);
+	m_chunkPosX = getPosition().x / ChunkSize;
+	m_chunkPosY = getPosition().x / ChunkSize;
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const

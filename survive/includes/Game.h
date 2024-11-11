@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include "Constants.h"
+#include "PlayArea.h"
 
 class Player;
 class Game;
@@ -29,6 +30,7 @@ public:
     bool initialise();
     void update(float deltaTime);
     void resetLevel();
+	void resetInputs();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
     State getState() const { return m_state; }
@@ -40,7 +42,7 @@ public:
     sf::Texture* getPlayerTexture() { return &m_playerTexture; }
 private:
     std::vector<std::unique_ptr<Player>> m_pPlayers;
-
+	std::unique_ptr<PlayArea>	m_pPlayArea;
 
     State m_state;
     std::unique_ptr<sf::Clock> m_pClock;

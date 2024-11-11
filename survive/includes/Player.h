@@ -27,13 +27,17 @@ public:
     virtual ~Player() {}
     
     bool initialise(int i);
-    void move(InputData inputData, float deltaTime);
+    void move(InputData inputData, float deltaTime, const std::map<std::pair<int, int>, std::vector<sf::RectangleShape>> &map);
     void attack();
     void update(float deltaTime);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     bool isDead() const { return m_isDead; }
     void setIsDead(bool isDead) { m_isDead = isDead; }
+
+	void checkCollisionY(const std::vector<sf::RectangleShape> &blocks);
+	void checkCollisionX(const std::vector<sf::RectangleShape> &blocks);
+
 
 	void initKeybinds(int i);
 	std::unordered_map<sf::Keyboard::Key, std::string>& getKeybinds() { return m_keybinds; }
@@ -46,4 +50,7 @@ private:
     Game*   m_pGame;
     std::unique_ptr<Weapon> m_pWeapon;
 	std::unordered_map<sf::Keyboard::Key, std::string>	m_keybinds;
+
+	int		m_chunkPosX;
+	int		m_chunkPosY;
 };
