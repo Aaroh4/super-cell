@@ -16,7 +16,7 @@ bool Player::initialise(int i)
 	if (i % 2 == 0)
 		m_collision.setPosition(40, 40);
 	else
-    	m_collision.setPosition(1500, 1050);
+    	m_collision.setPosition(1200, 700);
 	initKeybinds(i);
     return true;
 }

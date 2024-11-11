@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     // ResourceManager Must be Instantiated here -- DO NOT CHANGE
     ResourceManager::init(argv[0]);
 
-    sf::RenderWindow window(sf::VideoMode(ScreenWidth, ScreenHeight), "Super&Cell", sf::Style::Fullscreen | sf::Style::Titlebar);
+    sf::RenderWindow window({1920u, 1080u}, "Super&Cell", sf::Style::Fullscreen | sf::Style::Titlebar);
     window.setKeyRepeatEnabled(false);
     
     std::unique_ptr<Game> pGame = std::make_unique<Game>();

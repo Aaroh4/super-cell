@@ -103,12 +103,11 @@ void Game::update(float deltaTime)
 				}
 				else
 					m_bullets[i].move(deltaTime);
-				for (size_t i = 0; i < m_pPlayers.size(); i++)
-					if (m_pPlayers[i].get()->getCollider().getGlobalBounds().intersects(m_bullets[i].getSprite().getGlobalBounds()))
-					{
-						m_pPlayers[i].get()->setIsDead(true);
-						break ;
-					}
+				if (m_pPlayers[0].get()->getCollider().getGlobalBounds().intersects(m_bullets[i].getSprite().getGlobalBounds()))
+				{
+					m_pPlayers[0].get()->setIsDead(true);
+					break ;
+				}
 			}            
         }
         break;
