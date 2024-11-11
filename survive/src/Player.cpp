@@ -5,7 +5,7 @@ Player::Player(Game* pGame) :
     m_pGame(pGame)
 {
 }
-
+// Initializing player
 bool Player::initialise(int i)
 {
 	m_lastTimeShot = 0;
@@ -23,6 +23,7 @@ bool Player::initialise(int i)
 
 void Player::initKeybinds(int i)
 {
+	// Simple keybinds system can be adapted to more keybinds in the longer run
 	if (i % 2 == 0)
 	{
 		m_keybinds[sf::Keyboard::A] = "MOVE_LEFT";
